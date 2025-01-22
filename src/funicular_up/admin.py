@@ -1,3 +1,11 @@
-from django.contrib import admin  # noqa
+from django.contrib import admin
 
-# Register your models here.
+from .models import Folder
+
+
+@admin.register(Folder)
+class FolderAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "parent",
+    )
