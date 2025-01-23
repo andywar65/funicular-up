@@ -153,6 +153,32 @@ wheels = [
 ]
 
 [[package]]
+name = "django-geojson"
+version = "4.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django", version = "4.2.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "django", version = "5.1.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b9/65/9a3df3ecbc78d5d3f5de240d87d689466012a17690f624febb95178d776e/django_geojson-4.1.0.tar.gz", hash = "sha256:d044803ef8ce5039d89a5c53ecf6cb9dd0068acb31ceade041f6c14b1b2a723a", size = 20939 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/44/9e9763876dc137bddcf44ee5650b7e5b4bd2e72846d09967a15d5d55a6d0/django_geojson-4.1.0-py3-none-any.whl", hash = "sha256:27cb3dc94f448300157d05646a8d3ff14e9e36a58181c47a654e307c449fd9da", size = 22680 },
+]
+
+[[package]]
+name = "django-leaflet"
+version = "0.31.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django", version = "4.2.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "django", version = "5.1.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2e/df/c0980b44685c1fc7e61f63d8a84820da31b3f34db6c73897936aa0f98657/django_leaflet-0.31.0.tar.gz", hash = "sha256:fb2b75f84aff60d4058659300f31a711554c65d128bade5fa8088637fb0751f7", size = 562314 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/94/31/978bf2354fdd41a224a73b3c84292ab091736480a3b701aa4488e4024226/django_leaflet-0.31.0-py3-none-any.whl", hash = "sha256:914d973a30730eafec4cd822e7107bbd71a6d2e0106b6e919fd9eea67bbcbc5c", size = 582297 },
+]
+
+[[package]]
 name = "django-tree-queries"
 version = "0.19.0"
 source = { registry = "https://pypi.org/simple" }
@@ -189,6 +215,8 @@ source = { editable = "." }
 dependencies = [
     { name = "django", version = "4.2.18", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "django", version = "5.1.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "django-geojson" },
+    { name = "django-leaflet" },
     { name = "django-tree-queries" },
 ]
 
@@ -202,6 +230,8 @@ dev = [
 requires-dist = [
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "django", specifier = ">=4.2.18" },
+    { name = "django-geojson", specifier = ">=4.1.0" },
+    { name = "django-leaflet", specifier = ">=0.31.0" },
     { name = "django-tree-queries", specifier = ">=0.19.0" },
     { name = "environs", extras = ["django"], marker = "extra == 'dev'" },
 ]

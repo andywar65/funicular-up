@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from djgeojson.fields import PointField
 from tree_queries.models import TreeNode
 
 
@@ -9,6 +10,9 @@ class Folder(TreeNode):
         _("Name"),
         max_length=50,
     )
+    description = models.TextField(_("Description"), null=True, blank=True)
+    date = models.DateField(_("Date"), null=True, blank=True)
+    geom = PointField(_("Location"), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Folder")

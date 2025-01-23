@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third party
+    "leaflet",
+    "djgeojson",
     "funicular_up",
 ]
 
@@ -114,6 +116,12 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+
+LEAFLET_CONFIG = {
+    "DEFAULT_CENTER": (41.8988, 12.5451),
+    "DEFAULT_ZOOM": 10,
+    "RESET_VIEW": False,
+}
 
 
 # Static files (CSS, JavaScript, Images)
