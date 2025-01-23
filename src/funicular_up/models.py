@@ -1,5 +1,5 @@
-from django.db import IntegrityError, models, transaction
-from django.utils.crypto import get_random_string
+from django.db import models
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from tree_queries.models import TreeNode
 
@@ -13,7 +13,10 @@ class Folder(TreeNode):
     class Meta:
         verbose_name = _("Folder")
         verbose_name_plural = _("Folders")
-        ordering = ("name",)
+        ordering = (
+            "parent_id",
+            "name",
+        )
         constraints = [
             models.UniqueConstraint(
                 fields=[
@@ -22,17 +25,15 @@ class Folder(TreeNode):
                 ],
                 name="unique_folder_name",
             ),
+            models.UniqueConstraint(
+                fields=[
+                    "name",
+                ],
+                condition=Q(parent=None),
+                name="unique_root_folder_name",
+                violation_error_message=_("Root folder name must be unique"),
+            ),
         ]
 
     def __str__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        # check for folder unique name
-        try:
-            # avoid TransactionManagementError
-            with transaction.atomic():
-                super().save(*args, **kwargs)
-        except IntegrityError:
-            self.name = f"{self.name}_{get_random_string(7)}"
-            super().save(*args, **kwargs)
