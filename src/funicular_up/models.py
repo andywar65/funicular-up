@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from djgeojson.fields import PointField
+from filer.fields.image import FilerImageField
 from tree_queries.models import TreeNode
 
 
@@ -41,3 +42,31 @@ class Folder(TreeNode):
 
     def __str__(self):
         return self.name
+
+
+STATUS = [
+    ("UP", _("Uploaded")),
+]
+
+
+class Entry(models.Model):
+    folder = models.ForeignKey(
+        Folder, on_delete=models.CASCADE, verbose_name=_("Folder")
+    )
+    image = FilerImageField(
+        verbose_name=_("Image"),
+        related_name="entry_image",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    caption = models.CharField(_("Caption"), max_length=200, null=True, blank=True)
+    status = models.CharField(
+        max_length=2,
+        choices=STATUS,
+        default="UP",
+        editable=False,
+    )
+
+    class Meta:
+        verbose_name = _("Entry")
+        verbose_name_plural = _("Entries")
