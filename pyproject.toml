@@ -29,6 +29,7 @@ dependencies = [
     "django>=4.2.18",
     "django-leaflet>=0.31.0",
     "django-geojson>=4.1.0",
+    "django-filer>=3.3.1",
 ]
 
 [project.urls]
@@ -38,4 +39,9 @@ Repository = "https://github.com/andywar65/funicular-up"
 dev = [
     "coverage",
     "environs[django]",
+]
+
+[dependency-groups]
+dev = [
+    "setuptools>=75.8.0",
 ]
