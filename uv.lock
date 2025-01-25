@@ -166,15 +166,6 @@ wheels = [
 ]
 
 [[package]]
-name = "django-cache-url"
-version = "3.4.5"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/20/28/d420aaa89028d2ec0cf17c1510d06ff6a8ed0bf1abfb7f33c999e1c5befa/django-cache-url-3.4.5.tar.gz", hash = "sha256:eb9fb194717524348c95cad9905b70b647452741c1d9e481fac6d2125f0ad917", size = 7230 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/48/90/01755e4a42558b763f7021e9369aa6aa94c2ede7313deed56cb7483834ab/django_cache_url-3.4.5-py2.py3-none-any.whl", hash = "sha256:5f350759978483ab85dc0e3e17b3d53eed3394a28148f6bf0f53d11d0feb5b3c", size = 4760 },
-]
-
-[[package]]
 name = "django-filer"
 version = "3.3.1"
 source = { registry = "https://pypi.org/simple" }
@@ -271,13 +262,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/d5/ad/57cfa3e8a006df88e723524127dbab2971a4877c97e7bad070257e15cb6c/environs-14.1.0-py3-none-any.whl", hash = "sha256:a7edda1668ddf1fbfcb7662bdc242dac25648eff2c7fdbaa5d959693afed7a3e", size = 15332 },
 ]
 
-[package.optional-dependencies]
-django = [
-    { name = "dj-database-url" },
-    { name = "dj-email-url" },
-    { name = "django-cache-url" },
-]
-
 [[package]]
 name = "funicular-up"
 version = "0.1.0"
@@ -291,30 +275,32 @@ dependencies = [
     { name = "django-tree-queries" },
 ]
 
-[package.optional-dependencies]
-dev = [
-    { name = "coverage" },
-    { name = "environs", extra = ["django"] },
-]
-
 [package.dev-dependencies]
 dev = [
+    { name = "coverage" },
+    { name = "dj-database-url" },
+    { name = "dj-email-url" },
+    { name = "environs" },
     { name = "setuptools" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "coverage", marker = "extra == 'dev'" },
     { name = "django", specifier = ">=4.2.18" },
     { name = "django-filer", specifier = ">=3.3.1" },
     { name = "django-geojson", specifier = ">=4.1.0" },
     { name = "django-leaflet", specifier = ">=0.31.0" },
     { name = "django-tree-queries", specifier = ">=0.19.0" },
-    { name = "environs", extras = ["django"], marker = "extra == 'dev'" },
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "setuptools", specifier = ">=75.8.0" }]
+dev = [
+    { name = "coverage", specifier = ">=7.6.10" },
+    { name = "dj-database-url", specifier = ">=2.3.0" },
+    { name = "dj-email-url", specifier = ">=1.0.6" },
+    { name = "environs", specifier = ">=14.1.0" },
+    { name = "setuptools", specifier = ">=75.8.0" },
+]
 
 [[package]]
 name = "lxml"

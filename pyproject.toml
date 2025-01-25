@@ -35,13 +35,11 @@ dependencies = [
 [project.urls]
 Repository = "https://github.com/andywar65/funicular-up"
 
-[project.optional-dependencies]
-dev = [
-    "coverage",
-    "environs[django]",
-]
-
 [dependency-groups]
 dev = [
+    "coverage>=7.6.10",
+    "dj-database-url>=2.3.0",
+    "dj-email-url>=1.0.6",
+    "environs>=14.1.0",
     "setuptools>=75.8.0",
 ]
