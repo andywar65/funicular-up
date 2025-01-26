@@ -1,9 +1,13 @@
 {% load i18n %}
+{% load thumbnail %}
 
 <h2>{% trans "Folder" %}: {{ object.name }}</h2>
 {% if object.entry_set.count > 0 %}
   {% for entry in object.entry_set.all %}
-    Image
+    <figure>
+      <img src="{% thumbnail entry.image 128x128 crop %}" alt="{{ entry.caption }}">
+      <figcaption>{{ entry.caption }}</figcaption>
+    </figure>
   {% endfor %}
 {% else %}
   <p>{% trans "No pictures in this folder" %}</p>
