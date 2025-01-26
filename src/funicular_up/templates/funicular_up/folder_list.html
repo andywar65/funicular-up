@@ -1,15 +1,18 @@
 {% load i18n %}
 
+<h2>{% trans "All folders" %}</h2>
 {% if object_list %}
   {% for object in object_list %}
-    <p style="margin-left: {{ object.tree_depth }}0px">
-      {{ object.name }}
-      <p>
+    <a style="margin-left: {{ object.tree_depth }}0px"
+       href="{% url 'funicular_up:folder_detail' pk=object.id %}">
+      {{ object.name }}</a>
+    ({{ object.entry_set.count }})<br>
   {% endfor %}
 {% else %}
   <p>{% trans "No folders yet" %}</p>
 {% endif %}
 {% if user.is_authenticated %}
+  <hr>
   <a href="/admin/funicular_up/folder/add/">
     {% trans "Add folder" %}
   </a>
