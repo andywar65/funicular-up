@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from environs import Env
+
+env = Env()
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -131,8 +136,8 @@ LEAFLET_CONFIG = {
 
 STATIC_URL = "static/"
 MEDIA_URL = "media/"
-STATIC_ROOT = "/home/andywar65/funicular-up/static"
-MEDIA_ROOT = "/home/andywar65/funicular-up/media"
+STATIC_ROOT = env.str("STATIC_ROOT")
+MEDIA_ROOT = env.str("MEDIA_ROOT")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
