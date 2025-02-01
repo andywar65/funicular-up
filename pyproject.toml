@@ -30,6 +30,7 @@ dependencies = [
     "django-leaflet>=0.31.0",
     "django-geojson>=4.1.0",
     "django-filer>=3.3.1",
+    "django-cors-headers>=4.6.0",
 ]
 
 [project.urls]
