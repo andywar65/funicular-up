@@ -28,3 +28,8 @@ def send_status(request):
     for entry in entries:
         data[entry.id] = entry.image.url
     return JsonResponse(data)
+
+
+def test_view(request):
+    data = {"foo": "bar"}
+    return JsonResponse(data)
