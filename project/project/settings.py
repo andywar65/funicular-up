@@ -34,6 +34,8 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "apperilli.opalstacked.com"]
 
 CORS_ALLOWED_ORIGINS = [
     "https://apperilli.opalstacked.com",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
 
 
