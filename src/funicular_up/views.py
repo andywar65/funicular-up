@@ -2,6 +2,9 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.generic import DetailView, ListView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Entry, Folder
 
@@ -28,3 +31,14 @@ def send_status(request):
     for entry in entries:
         data[entry.id] = entry.image.url
     return JsonResponse(data)
+
+
+class SendStatus(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        entries = Entry.objects.filter(status="UP")
+        data = {}
+        for entry in entries:
+            data[entry.id] = entry.image.url
+        return Response(data)

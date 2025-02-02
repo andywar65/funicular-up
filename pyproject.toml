@@ -10,7 +10,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "funicular-up"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="andywar65", email="andy.war1965@gmail.com" },
 ]
@@ -30,6 +30,7 @@ dependencies = [
     "django-leaflet>=0.31.0",
     "django-geojson>=4.1.0",
     "django-filer>=3.3.1",
+    "djangorestframework>=3.15.2",
 ]
 
 [project.urls]
