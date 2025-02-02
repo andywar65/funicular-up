@@ -1,8 +1,6 @@
-import json
-
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.views.generic import DetailView, ListView
 
 from .models import Entry, Folder
@@ -30,17 +28,3 @@ def send_status(request):
     for entry in entries:
         data[entry.id] = entry.image.url
     return JsonResponse(data)
-
-
-def test_view(request):
-    data = {"foo": "bar"}
-    return JsonResponse(data)
-
-
-def test_http_json_view(request):
-    data = {"foo": "bar"}
-    return HttpResponse(json.dumps(data), content_type="application/json")
-
-
-def test_http_view(request):
-    return HttpResponse("<p>application/json</p>")

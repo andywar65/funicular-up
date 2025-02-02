@@ -32,12 +32,6 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "apperilli.opalstacked.com"]
 
-CORS_ALLOWED_ORIGINS = [
-    "https://apperilli.opalstacked.com",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-
 
 # Application definition
 
@@ -49,7 +43,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # third party
-    "corsheaders",
     "easy_thumbnails",
     "filer",
     "leaflet",
@@ -60,7 +53,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
