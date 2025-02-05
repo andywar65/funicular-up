@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
+from PIL import Image
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -41,6 +42,9 @@ class EntryDownloaded(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         entry = get_object_or_404(Entry, id=kwargs["pk"])
         entry.status = "DW"
+        with Image.open(entry.image.path) as im:
+            im.thumbnail((200, 200))
+            im.save(entry.image.path)
         entry.save()
         data = {"text": f"Entry {entry.id} deleted on server"}
         return Response(data)
