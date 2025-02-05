@@ -37,13 +37,16 @@ class SendStatus(APIView):
 
 
 class EntryDownloaded(RetrieveAPIView):
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         entry = get_object_or_404(Entry, id=kwargs["pk"])
         entry.status = "DW"
         with Image.open(entry.image.path) as im:
-            im.thumbnail((200, 200))
+            if entry.image.width >= entry.image.height:
+                im.thumbnail((int(entry.image.width / entry.image.height * 128), 128))
+            else:
+                im.thumbnail((128, int(entry.image.height / entry.image.width * 128)))
             im.save(entry.image.path)
         entry.save()
         data = {"text": f"Entry {entry.id} deleted on server"}
