@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -30,4 +32,15 @@ class SendStatus(APIView):
         data = {}
         for entry in entries:
             data[entry.id] = entry.image.url
+        return Response(data)
+
+
+class EntryDownloaded(RetrieveAPIView):
+    # permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        entry = get_object_or_404(Entry, id=kwargs["pk"])
+        entry.status = "DW"
+        entry.save()
+        data = {"text": f"Entry {entry.id} deleted on server"}
         return Response(data)
