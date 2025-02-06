@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div id="fup-content" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% block fup-content %}
+    {% endblock fup-content %}
+  </div>
+{% endblock content %}
+{% block extra-js %}
+  <script src="{% static "funicular_up/js/htmx.min.js" %}"></script>
+{% endblock extra-js %}

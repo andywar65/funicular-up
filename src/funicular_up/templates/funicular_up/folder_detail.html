@@ -1,24 +1,27 @@
+{% extends "funicular_up/base_app.html" %}
 {% load i18n %}
 {% load thumbnail %}
 
-<h2>{% trans "Folder" %}: {{ object.name }}</h2>
-{% if object.entry_set.count > 0 %}
-  {% for entry in object.entry_set.all %}
-    <figure>
-      <img src="{% thumbnail entry.image 128x128 crop %}" alt="{{ entry.caption }}">
-      <figcaption>{{ entry.caption }}</figcaption>
-    </figure>
-  {% endfor %}
-{% else %}
-  <p>{% trans "No pictures in this folder" %}</p>
-{% endif %}
-<hr>
-<a href="{% url 'funicular_up:folder_list' %}">
-  {% trans "Back to list" %}
-</a>
-{% if user.is_authenticated %}
-  <br>
-  <a href="/admin/funicular_up/folder/{{ object.id }}/change/">
-    {% trans "Modify folder" %}
+{% block fup-content %}
+  <h2>{% trans "Folder" %}: {{ object.name }}</h2>
+  {% if object.entry_set.count > 0 %}
+    {% for entry in object.entry_set.all %}
+      <figure>
+        <img src="{% thumbnail entry.image 128x128 crop %}" alt="{{ entry.caption }}">
+        <figcaption>{{ entry.caption }}</figcaption>
+      </figure>
+    {% endfor %}
+  {% else %}
+    <p>{% trans "No pictures in this folder" %}</p>
+  {% endif %}
+  <hr>
+  <a href="{% url 'funicular_up:folder_list' %}">
+    {% trans "Back to list" %}
   </a>
-{% endif %}
+  {% if user.is_authenticated %}
+    <br>
+    <a href="/admin/funicular_up/folder/{{ object.id }}/change/">
+      {% trans "Modify folder" %}
+    </a>
+  {% endif %}
+{% endblock fup-content %}
