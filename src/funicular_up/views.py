@@ -34,6 +34,12 @@ class FolderDetailView(LoginRequiredMixin, DetailView):
             return ["funicular_up/htmx/folder_detail.html"]
         return super().get_template_names()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object.parent:
+            context["parent"] = "foo"
+        return context
+
 
 class SendStatus(APIView):
     permission_classes = (IsAuthenticated,)
