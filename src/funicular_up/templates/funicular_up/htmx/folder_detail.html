@@ -13,7 +13,10 @@
   <p>{% trans "No pictures in this folder" %}</p>
 {% endif %}
 <hr>
-<a href="{% url 'funicular_up:folder_list' %}">
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
   {% trans "Back to list" %}
 </a>
 {% if user.is_authenticated %}

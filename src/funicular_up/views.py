@@ -19,10 +19,20 @@ class FolderListView(LoginRequiredMixin, ListView):
         context["object_list"] = context["object_list"].with_tree_fields()
         return context
 
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["funicular_up/htmx/folder_list.html"]
+        return super().get_template_names()
+
 
 class FolderDetailView(LoginRequiredMixin, DetailView):
     model = Folder
     template_name = "funicular_up/folder_detail.html"
+
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["funicular_up/htmx/folder_detail.html"]
+        return super().get_template_names()
 
 
 class SendStatus(APIView):
