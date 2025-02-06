@@ -10,6 +10,21 @@
   </a>
 {% endif %}
 <h2>{% trans "Folder" %}: {{ object.name }}</h2>
+{% if object.children.exists %}
+  <details>
+    <summary>
+      {% trans "Children folders" %}
+    </summary>
+    {% for child in object.children.all %}
+      <a href="#"
+         hx-get="{% url 'funicular_up:folder_detail' pk=child.id %}"
+         hx-target="#fup-content"
+         hx-push-url="true">
+        {{ child.name }}</a>
+      ({{ child.entry_set.count }})<br>
+    {% endfor %}
+  </details>
+{% endif %}
 {% if object.entry_set.count > 0 %}
   {% for entry in object.entry_set.all %}
     <figure>
