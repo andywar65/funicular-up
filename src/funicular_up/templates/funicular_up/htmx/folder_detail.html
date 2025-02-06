@@ -29,7 +29,7 @@
   {% for entry in object.entry_set.all %}
     <figure>
       <img src="{% thumbnail entry.image 128x128 crop %}" alt="{{ entry.caption }}">
-      <figcaption>{{ entry.caption }}</figcaption>
+      <figcaption id="entry-{entry.id}">{% include "funicular_up/htmx/entry_status.html" %}</figcaption>
     </figure>
   {% endfor %}
 {% else %}

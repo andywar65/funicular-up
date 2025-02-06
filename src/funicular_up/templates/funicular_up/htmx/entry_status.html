@@ -1,0 +1,12 @@
+{% load i18n %}
+
+{{ entry.caption|default_if_none:"" }}
+{% if entry.status == "UP" %}
+  {% trans "Image available" %}
+{% elif entry.status == "DW" %}
+  {% trans "Request image" %}
+{% elif entry.status == "RQ" %}
+  {% trans "Waiting for image" %}
+{% elif entry.status == "ST" %}
+  {% trans "Image available" %}
+{% endif %}
