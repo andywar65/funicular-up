@@ -2,7 +2,12 @@
 
 {{ entry.caption|default_if_none:"" }} -
 {% if entry.status == "UP" %}
-  {% trans "Image available" %}
+  <a href="#"
+     hx-get="{% url 'funicular_up:entry_detail' pk=entry.id %}"
+     hx-target="#fup-content"
+     hx-push-url="true">
+    {% trans "Image available" %}
+  </a>
 {% elif entry.status == "DW" %}
   {% trans "Request image" %}
 {% elif entry.status == "RQ" %}
