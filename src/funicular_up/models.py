@@ -45,10 +45,11 @@ class Folder(TreeNode):
 
 
 STATUS = [
-    ("UP", _("Uploaded")),
-    ("DW", _("Downloaded")),
-    ("RQ", _("Requested")),
-    ("ST", _("Restored")),
+    ("UP", _("Uploaded to server")),
+    ("DW", _("Downloaded to local")),
+    ("RQ", _("Requested at server")),
+    ("ST", _("Restored from local")),
+    ("KI", _("Kill on server")),
 ]
 
 
