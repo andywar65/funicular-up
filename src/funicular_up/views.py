@@ -35,6 +35,16 @@ class FolderDetailView(LoginRequiredMixin, DetailView):
         return super().get_template_names()
 
 
+class EntryDetailView(LoginRequiredMixin, DetailView):
+    model = Entry
+    template_name = "funicular_up/entry_detail.html"
+
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["funicular_up/htmx/entry_detail.html"]
+        return super().get_template_names()
+
+
 class SendStatus(APIView):
     permission_classes = (IsAuthenticated,)
 
