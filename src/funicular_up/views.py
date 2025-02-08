@@ -39,6 +39,13 @@ class EntryDetailView(LoginRequiredMixin, DetailView):
     model = Entry
     template_name = "funicular_up/entry_detail.html"
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.status == "ST":
+            obj.status = "KI"
+            obj.save()
+        return obj
+
     def get_template_names(self):
         if "Hx-Request" in self.request.headers:
             return ["funicular_up/htmx/entry_detail.html"]
