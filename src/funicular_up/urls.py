@@ -4,6 +4,7 @@ from .views import (
     EntryDetailView,
     EntryDownloaded,
     EntryStatusDetailView,
+    EntryUpdateAPIView,
     FolderDetailView,
     FolderListView,
     SendStatus,
@@ -17,5 +18,6 @@ urlpatterns = [
     path("entry/<pk>/status/", EntryStatusDetailView.as_view(), name="entry_status"),
     # API views
     path("status/", SendStatus.as_view(), name="send_status"),
-    path("entry/<pk>/downloaded/", EntryDownloaded.as_view(), name="entry_downloaded"),
+    path("entry/<pk>/download/", EntryDownloaded.as_view(), name="entry_download"),
+    path("entry/<pk>/upload/", EntryUpdateAPIView.as_view(), name="entry_upload"),
 ]
