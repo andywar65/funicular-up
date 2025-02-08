@@ -96,9 +96,9 @@ class EntrySerializer(serializers.ModelSerializer):
 
 class EntryDownloaded(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
+    queryset = Entry.objects.filter(status__in=["UP", "KI"])
 
     def get(self, request, *args, **kwargs):
-        # entry = get_object_or_404(Entry, id=kwargs["pk"])
         entry = self.get_object()
         entry.set_as_downloaded()
         data = {"text": f"Entry {entry.id} deleted on server"}
