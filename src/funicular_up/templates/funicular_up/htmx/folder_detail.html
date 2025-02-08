@@ -6,8 +6,9 @@
      hx-get="{% url 'funicular_up:folder_detail' pk=object.parent.id %}"
      hx-target="#fup-content"
      hx-push-url="true">
-    ^ {% trans "Parent folder" %}
+    {% trans "Back to parent folder" %}
   </a>
+  : {{ object.parent.name }}
 {% endif %}
 <h2>{% trans "Folder" %}: {{ object.name }}</h2>
 {% if object.children.exists %}
@@ -27,9 +28,9 @@
 {% endif %}
 {% if object.entry_set.count > 0 %}
   {% for entry in object.entry_set.all %}
-    <figure>
+    <figure id="entry-{{entry.id}}">
       <img src="{% thumbnail entry.image 128x128 crop %}" alt="{{ entry.caption }}">
-      <figcaption id="entry-{entry.id}">{% include "funicular_up/htmx/entry_status.html" %}</figcaption>
+      <figcaption>{% include "funicular_up/htmx/entry_status.html" %}</figcaption>
     </figure>
   {% endfor %}
 {% else %}

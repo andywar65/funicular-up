@@ -1,18 +1,6 @@
-{% load i18n %}
-
-<a href="#"
-   hx-get="{% url 'funicular_up:folder_detail' pk=object.folder.id %}#entry-{{ entry.id }}"
-   hx-target="#fup-content"
-   hx-push-url="true">
-  {% trans "Back to folder" %}
-</a>
+{% include "funicular_up/htmx/entry_detail_anchor.html" %}
 <figure>
   <img  style="width: 100%" src="{{ object.image.url }}" alt="{{ object.caption }}">
   <figcaption>{{ object.caption }}</figcaption>
 </figure>
-<a href="#"
-   hx-get="{% url 'funicular_up:folder_detail' pk=object.folder.id %}#entry-{{ entry.id }}"
-   hx-target="#fup-content"
-   hx-push-url="true">
-  {% trans "Back to folder" %}
-</a>
+{% include "funicular_up/htmx/entry_detail_anchor.html" %}

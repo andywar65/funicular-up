@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_detail' pk=object.folder.id %}#entry-{{ object.id }}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "Back to folder" %}
+</a>
+: {{ object.folder.name }}
