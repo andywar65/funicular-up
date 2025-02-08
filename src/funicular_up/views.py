@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
 from PIL import Image
@@ -49,6 +50,24 @@ class EntryDetailView(LoginRequiredMixin, DetailView):
     def get_template_names(self):
         if "Hx-Request" in self.request.headers:
             return ["funicular_up/htmx/entry_detail.html"]
+        return super().get_template_names()
+
+
+class EntryStatusDetailView(LoginRequiredMixin, DetailView):
+    model = Entry
+    template_name = "funicular_up/htmx/entry_status.html"
+    context_object_name = "entry"
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.status == "DW":
+            obj.status = "RQ"
+            obj.save()
+        return obj
+
+    def get_template_names(self):
+        if "Hx-Request" not in self.request.headers:
+            raise Http404
         return super().get_template_names()
 
 

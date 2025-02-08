@@ -1,8 +1,5 @@
 {% load i18n %}
 
-{% if entry.caption %}
-  {{ entry.caption }} -
-{% endif %}
 {% if entry.status == "UP" or entry.status == "ST" or entry.status == "KI" %}
   <a href="#"
      hx-get="{% url 'funicular_up:entry_detail' pk=entry.id %}"
@@ -11,7 +8,16 @@
     {% trans "Image available" %}
   </a>
 {% elif entry.status == "DW" %}
-  {% trans "Request image" %}
+  <a href="#"
+     hx-get="{% url 'funicular_up:entry_status' pk=entry.id %}"
+     hx-swap="outerHTML">
+    {% trans "Request image" %}
+  </a>
 {% elif entry.status == "RQ" %}
-  {% trans "Waiting for image" %}
+  <a style="color: red"
+     href="#"
+     hx-get="{% url 'funicular_up:entry_status' pk=entry.id %}"
+     hx-swap="outerHTML">
+    {% trans "Waiting for image" %}
+  </a>
 {% endif %}
