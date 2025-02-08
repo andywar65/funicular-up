@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from djgeojson.fields import PointField
 from filer.fields.image import FilerImageField
+from PIL import Image
 from tree_queries.models import TreeNode
 
 
@@ -74,3 +75,13 @@ class Entry(models.Model):
     class Meta:
         verbose_name = _("Entry")
         verbose_name_plural = _("Entries")
+
+    def set_as_downloaded(self):
+        self.status = "DW"
+        with Image.open(self.image.path) as im:
+            if self.image.width >= self.image.height:
+                im.thumbnail((int(self.image.width / self.image.height * 128), 128))
+            else:
+                im.thumbnail((128, int(self.image.height / self.image.width * 128)))
+            im.save(self.image.path)
+        self.save()
