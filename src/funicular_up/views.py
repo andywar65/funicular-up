@@ -153,6 +153,7 @@ class EntryUpdateAPIView(UpdateAPIView):
         serializer = ImageUploadSerializer(data=request.data)
         if serializer.is_valid():
             img = serializer.validated_data["image"]
+            entry.image.file.delete()
             entry.image.file.save(img.name, img)
             entry.status = "ST"
             entry.save()
