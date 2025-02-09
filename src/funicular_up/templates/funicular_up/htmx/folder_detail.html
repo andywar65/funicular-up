@@ -48,7 +48,7 @@
    hx-push-url="true">
   {% trans "Back to list" %}
 </a>
-{% if user.is_authenticated %}
+{% if perms.funicular_up.change_folder %}
   <br>
   <a href="/admin/funicular_up/folder/{{ object.id }}/change/">
     {% trans "Modify folder" %}

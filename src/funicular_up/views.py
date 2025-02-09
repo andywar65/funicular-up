@@ -1,5 +1,5 @@
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import ModelForm
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -36,7 +36,8 @@ class FolderListView(LoginRequiredMixin, ListView):
         return super().get_template_names()
 
 
-class FolderCreateView(LoginRequiredMixin, CreateView):
+class FolderCreateView(PermissionRequiredMixin, CreateView):
+    permission_required = "funicular_up.add_folder"
     model = Folder
     template_name = "funicular_up/folder_create.html"
     form_class = FolderCreateForm
@@ -60,7 +61,7 @@ class FolderDetailView(LoginRequiredMixin, DetailView):
         return super().get_template_names()
 
 
-@login_required
+@permission_required("funicular_up.delete_folder")
 def folder_delete_view(request, pk):
     if "Hx-Request" not in request.headers:
         raise Http404("Request without HTMX headers")

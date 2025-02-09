@@ -10,3 +10,10 @@
     {% trans "Submit" %}
   </button>
 </form>
+<hr>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "Back to list" %}
+</a>

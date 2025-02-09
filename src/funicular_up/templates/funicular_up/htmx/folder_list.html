@@ -14,7 +14,7 @@
 {% else %}
   <p>{% trans "No folders yet" %}</p>
 {% endif %}
-{% if user.is_authenticated %}
+{% if perms.funicular_up.add_folder %}
   <hr>
   <a href="#"
      hx-get="{% url 'funicular_up:folder_create' %}"
