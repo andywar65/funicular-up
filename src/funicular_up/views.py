@@ -41,11 +41,6 @@ class FolderCreateView(LoginRequiredMixin, CreateView):
     template_name = "funicular_up/folder_create.html"
     form_class = FolderCreateForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["object_list"] = Folder.objects.all().with_tree_fields()
-        return context
-
     def get_template_names(self):
         if "Hx-Request" in self.request.headers:
             return ["funicular_up/htmx/folder_create.html"]
