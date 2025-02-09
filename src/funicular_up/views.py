@@ -108,11 +108,4 @@ class EntryDownloaded(RetrieveAPIView):
 class EntryUpdateAPIView(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = EntrySerializer
-
-    # def put(self, request, filename, format=None):
-    # entry = get_object_or_404(Entry, id=request.kwargs["pk"])
-    # entry.status = "ST"
-    # entry.image = request.FILES['file']
-    # entry.save()
-    # data = {"text": f"Entry {entry.id} restored on server"}
-    # return Response(data)
+    queryset = Entry.objects.filter(status="RQ")

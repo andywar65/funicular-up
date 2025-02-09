@@ -48,7 +48,7 @@ class Folder(TreeNode):
 STATUS = [
     ("UP", _("Uploaded to server")),
     ("DW", _("Downloaded to local")),
-    ("RQ", _("Requested at server")),
+    ("RQ", _("Requested on server")),
     ("ST", _("Restored from local")),
     ("KI", _("Kill on server")),
 ]
@@ -66,10 +66,11 @@ class Entry(models.Model):
     )
     caption = models.CharField(_("Caption"), max_length=200, null=True, blank=True)
     status = models.CharField(
+        _("Status"),
         max_length=2,
         choices=STATUS,
         default="UP",
-        editable=False,
+        # editable=False,
     )
 
     class Meta:
