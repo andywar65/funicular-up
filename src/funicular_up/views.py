@@ -159,5 +159,5 @@ class EntryUpdateAPIView(UpdateAPIView):
             r_data = {"text": f"Entry {entry.id} restored on server"}
             return Response(r_data)
         else:
-            r_data = {"text": f"Entry {entry.id} not restored on server"}
+            r_data = serializer.errors
             return Response(r_data)
