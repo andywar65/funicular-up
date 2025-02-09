@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<h2>{% trans "Add folder" %}</h2>
+<form>
+  {{ form }}
+  <br>
+  <button type="submit"
+          hx-post="{% url 'funicular_up:folder_create' %}"
+          hx-target="#fup-content">
+    {% trans "Submit" %}
+  </button>
+</form>

@@ -4,9 +4,10 @@ from django.forms import ModelForm
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, ListView
 from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -20,9 +21,24 @@ class FolderCreateForm(ModelForm):
         fields = ("parent", "name")
 
 
-class FolderListView(LoginRequiredMixin, CreateView):
+class FolderListView(LoginRequiredMixin, ListView):
     model = Folder
     template_name = "funicular_up/folder_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object_list"] = context["object_list"].with_tree_fields()
+        return context
+
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["funicular_up/htmx/folder_list.html"]
+        return super().get_template_names()
+
+
+class FolderCreateView(LoginRequiredMixin, CreateView):
+    model = Folder
+    template_name = "funicular_up/folder_create.html"
     form_class = FolderCreateForm
 
     def get_context_data(self, **kwargs):
@@ -32,7 +48,7 @@ class FolderListView(LoginRequiredMixin, CreateView):
 
     def get_template_names(self):
         if "Hx-Request" in self.request.headers:
-            return ["funicular_up/htmx/folder_list.html"]
+            return ["funicular_up/htmx/folder_create.html"]
         return super().get_template_names()
 
     def get_success_url(self):
@@ -126,13 +142,26 @@ class EntryDownloaded(RetrieveAPIView):
         return Response(data)
 
 
-class EntrySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Entry
-        fields = ["image", "status"]
+class ImageUploadSerializer(serializers.Serializer):
+    image = serializers.ImageField()
 
 
 class EntryUpdateAPIView(UpdateAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = EntrySerializer
+    parser_classes = (MultiPartParser,)
+    serializer_class = ImageUploadSerializer
     queryset = Entry.objects.filter(status="RQ")
+
+    def put(self, request, *args, **kwargs):
+        entry = self.get_object()
+        serializer = ImageUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            img = serializer.validated_data["image"]
+            entry.image.file.save(img.name, img)
+            entry.status = "ST"
+            entry.save()
+            r_data = {"text": f"Entry {entry.id} restored on server"}
+            return Response(r_data)
+        else:
+            r_data = {"text": f"Entry {entry.id} not restored on server"}
+            return Response(r_data)
