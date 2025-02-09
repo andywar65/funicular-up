@@ -1,6 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import ModelForm
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView
 from rest_framework import serializers
@@ -45,6 +47,23 @@ class FolderDetailView(LoginRequiredMixin, DetailView):
         if "Hx-Request" in self.request.headers:
             return ["funicular_up/htmx/folder_detail.html"]
         return super().get_template_names()
+
+
+@login_required
+def folder_delete_view(request, pk):
+    if "Hx-Request" not in request.headers:
+        raise Http404("Request without HTMX headers")
+    elif not request.headers["Hx-Request"] == "true":
+        raise Http404("Request without HTMX headers")
+    folder = get_object_or_404(Folder, id=pk)
+    parent = folder.parent
+    folder.delete()
+    if parent:
+        return HttpResponseRedirect(
+            reverse("funicular_up:folder_detail", kwargs={"pk": parent.id})
+        )
+    else:
+        return HttpResponseRedirect(reverse("funicular_up:folder_list"))
 
 
 class EntryDetailView(LoginRequiredMixin, DetailView):
