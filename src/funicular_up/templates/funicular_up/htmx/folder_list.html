@@ -16,7 +16,14 @@
 {% endif %}
 {% if user.is_authenticated %}
   <hr>
-  <a href="/admin/funicular_up/folder/add/">
-    {% trans "Add folder" %}
-  </a>
+  <h3>{% trans "Add folder" %}</h3>
+  <form>
+    {{ form }}
+    <br>
+    <button type="submit"
+            hx-post="{% url 'funicular_up:folder_list' %}"
+            hx-target="#fup-content">
+      {% trans "Submit" %}
+    </button>
+  </form>
 {% endif %}

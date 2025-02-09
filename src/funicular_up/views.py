@@ -1,10 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import ModelForm
 from django.http import Http404
-
-# from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView
-
-# from rest_framework.parsers import FileUploadParser
+from django.urls import reverse
+from django.views.generic import CreateView, DetailView
 from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -14,19 +12,29 @@ from rest_framework.views import APIView
 from .models import Entry, Folder
 
 
-class FolderListView(LoginRequiredMixin, ListView):
+class FolderCreateForm(ModelForm):
+    class Meta:
+        model = Folder
+        fields = ("parent", "name")
+
+
+class FolderListView(LoginRequiredMixin, CreateView):
     model = Folder
     template_name = "funicular_up/folder_list.html"
+    form_class = FolderCreateForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["object_list"] = context["object_list"].with_tree_fields()
+        context["object_list"] = Folder.objects.all().with_tree_fields()
         return context
 
     def get_template_names(self):
         if "Hx-Request" in self.request.headers:
             return ["funicular_up/htmx/folder_list.html"]
         return super().get_template_names()
+
+    def get_success_url(self):
+        return reverse("funicular_up:folder_list")
 
 
 class FolderDetailView(LoginRequiredMixin, DetailView):
@@ -88,12 +96,6 @@ class SendStatus(APIView):
         return Response(data)
 
 
-class EntrySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Entry
-        fields = ["image", "status"]
-
-
 class EntryDownloaded(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Entry.objects.filter(status__in=["UP", "KI"])
@@ -103,6 +105,12 @@ class EntryDownloaded(RetrieveAPIView):
         entry.set_as_downloaded()
         data = {"text": f"Entry {entry.id} deleted on server"}
         return Response(data)
+
+
+class EntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Entry
+        fields = ["image", "status"]
 
 
 class EntryUpdateAPIView(UpdateAPIView):

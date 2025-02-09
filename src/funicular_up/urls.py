@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from .views import (
     EntryDetailView,
@@ -12,7 +13,7 @@ from .views import (
 
 app_name = "funicular_up"
 urlpatterns = [
-    path("", FolderListView.as_view(), name="home"),
+    path("", RedirectView.as_view(pattern_name="funicular_up:folder_list")),
     path("folder/", FolderListView.as_view(), name="folder_list"),
     path("folder/<pk>/", FolderDetailView.as_view(), name="folder_detail"),
     path("entry/<pk>/", EntryDetailView.as_view(), name="entry_detail"),
