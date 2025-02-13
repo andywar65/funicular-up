@@ -48,7 +48,7 @@ class FolderCreateView(PermissionRequiredMixin, CreateView):
         return super().get_template_names()
 
     def get_success_url(self):
-        return reverse("funicular_up:folder_list")
+        return reverse("funicular_up:folder_detail", kwargs={"pk": self.object.id})
 
 
 class FolderDetailView(LoginRequiredMixin, DetailView):

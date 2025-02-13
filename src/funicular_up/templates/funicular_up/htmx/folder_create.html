@@ -6,7 +6,8 @@
   <br>
   <button type="submit"
           hx-post="{% url 'funicular_up:folder_create' %}"
-          hx-target="#fup-content">
+          hx-target="#fup-content"
+          hx-push-url="true">
     {% trans "Submit" %}
   </button>
 </form>
