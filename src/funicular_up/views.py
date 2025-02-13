@@ -51,6 +51,14 @@ class FolderCreateView(PermissionRequiredMixin, CreateView):
         return reverse("funicular_up:folder_detail", kwargs={"pk": self.object.id})
 
 
+class FolderInitialCreateView(FolderCreateView):
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["parent"] = get_object_or_404(Folder, id=self.kwargs["pk"])
+        return initial
+
+
 class FolderDetailView(LoginRequiredMixin, DetailView):
     model = Folder
     template_name = "funicular_up/folder_detail.html"
