@@ -121,6 +121,20 @@ class EntryStatusDetailView(LoginRequiredMixin, DetailView):
         return super().get_template_names()
 
 
+@permission_required("funicular_up.delete_entry")
+def entry_delete_view(request, pk):
+    if "Hx-Request" not in request.headers:
+        raise Http404("Request without HTMX headers")
+    elif not request.headers["Hx-Request"] == "true":
+        raise Http404("Request without HTMX headers")
+    entry = get_object_or_404(Entry, id=pk)
+    folder = entry.folder
+    entry.delete()
+    return HttpResponseRedirect(
+        reverse("funicular_up:folder_detail", kwargs={"pk": folder.id})
+    )
+
+
 class SendStatus(APIView):
     permission_classes = (IsAuthenticated,)
 
