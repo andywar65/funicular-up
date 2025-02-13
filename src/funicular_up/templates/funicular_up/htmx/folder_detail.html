@@ -1,32 +1,38 @@
 {% load i18n %}
 {% load thumbnail %}
 
-{% if object.parent %}
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All folders" %}
+</a>
+{% if object.parent %} -
   <a href="#"
      hx-get="{% url 'funicular_up:folder_detail' pk=object.parent.id %}"
      hx-target="#fup-content"
      hx-push-url="true">
-    {% trans "Back to parent folder" %}
+    {% trans "Parent folder" %}
   </a>
   : {{ object.parent.name }}
 {% endif %}
 <h2>{% trans "Folder" %}: {{ object.name }}</h2>
 {% if object.children.exists %}
-  <details>
-    <summary>
-      {% trans "Children folders" %}
-    </summary>
+  <ul>
     {% for child in object.children.all %}
-      <a href="#"
-         hx-get="{% url 'funicular_up:folder_detail' pk=child.id %}"
-         hx-target="#fup-content"
-         hx-push-url="true">
-        {{ child.name }}</a>
-      ({{ child.entry_set.count }})<br>
+      <li>
+        <a href="#"
+           hx-get="{% url 'funicular_up:folder_detail' pk=child.id %}"
+           hx-target="#fup-content"
+           hx-push-url="true">
+          {{ child.name }}</a>
+        ({{ child.entry_set.count }})
+      </li>
     {% endfor %}
-  </details>
+  </ul>
 {% endif %}
 {% if object.entry_set.count > 0 %}
+  <hr>
   {% for entry in object.entry_set.all %}
     <figure id="entry-{{entry.id}}">
       <img src="{% thumbnail entry.image 128x128 crop %}" alt="{{ entry.caption }}">
@@ -41,15 +47,8 @@
 {% else %}
   <p>{% trans "No pictures in this folder" %}</p>
 {% endif %}
-<hr>
-<a href="#"
-   hx-get="{% url 'funicular_up:folder_list' %}"
-   hx-target="#fup-content"
-   hx-push-url="true">
-  {% trans "Back to list" %}
-</a>
 {% if perms.funicular_up.change_folder %}
-  <br>
+  <hr>
   <a href="/admin/funicular_up/folder/{{ object.id }}/change/">
     {% trans "Modify folder" %}
   </a>
