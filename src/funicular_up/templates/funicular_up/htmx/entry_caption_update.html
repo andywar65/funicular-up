@@ -1,0 +1,10 @@
+{% load i18n %}
+
+<form>
+  <span>{{ form }}
+    <button type="submit"
+            hx-post="{% url 'funicular_up:entry_caption' pk=entry.id %}"
+            hx-target="#fup-content">
+      {% trans "Submit" %}
+    </button></span>
+</form>

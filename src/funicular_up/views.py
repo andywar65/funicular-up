@@ -4,7 +4,7 @@ from django.forms import ModelForm
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.parsers import MultiPartParser
@@ -119,6 +119,34 @@ class EntryStatusDetailView(LoginRequiredMixin, DetailView):
         if "Hx-Request" not in self.request.headers:
             raise Http404
         return super().get_template_names()
+
+
+class EntryCaptionUpdateForm(ModelForm):
+    class Meta:
+        model = Entry
+        fields = ("caption",)
+
+
+class EntryCaptionUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "funicular_up.change_entry"
+    model = Entry
+    template_name = "funicular_up/htmx/entry_caption_update.html"
+    form_class = EntryCaptionUpdateForm
+    context_object_name = "entry"
+
+    def get_prefix(self):
+        return f"entry-{self.object.id}"
+
+    def get_template_names(self):
+        if "Hx-Request" not in self.request.headers:
+            raise Http404
+        return super().get_template_names()
+
+    def get_success_url(self):
+        return (
+            reverse("funicular_up:folder_detail", kwargs={"pk": self.object.folder.id})
+            + f"#entry-{self.object.id}"
+        )
 
 
 @permission_required("funicular_up.delete_entry")
