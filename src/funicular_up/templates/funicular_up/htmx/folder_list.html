@@ -1,19 +1,6 @@
 {% load i18n %}
 
 <h2>{% trans "All folders" %}</h2>
-{% if object_list %}
-  {% for object in object_list %}
-    <a style="margin-left: {{ object.tree_depth }}0px"
-       href="#"
-       hx-get="{% url 'funicular_up:folder_detail' pk=object.id %}"
-       hx-target="#fup-content"
-       hx-push-url="true">
-      {{ object.name }}</a>
-    ({{ object.entry_set.count }})<br>
-  {% endfor %}
-{% else %}
-  <p>{% trans "No folders yet" %}</p>
-{% endif %}
 {{ tree|safe }}
 {% if perms.funicular_up.add_folder %}
   <hr>

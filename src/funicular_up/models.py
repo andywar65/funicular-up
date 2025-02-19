@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from djgeojson.fields import PointField
 from filer.fields.image import FilerImageField
@@ -16,18 +17,18 @@ def show_folder_tree():
     depth = 0
     for fld in folders:
         if first:
-            tree += f"<li>{fld.name}</li>"
+            tree += f"<li>{fld.get_htmx_url()}</li>"
             first = False
         else:
             if fld.tree_depth == depth:
-                tree += f"<li>{fld.name}</li>"
+                tree += f"<li>{fld.get_htmx_url()}</li>"
             elif fld.tree_depth > depth:
-                tree += f"<ul><li>{fld.name}</li>"
+                tree += f"<ul><li>{fld.get_htmx_url()}</li>"
                 depth = fld.tree_depth
             else:
                 for d in range(depth - fld.tree_depth):
                     tree += "</ul>"
-                tree += f"<li>{fld.name}</li>"
+                tree += f"<li>{fld.get_htmx_url()}</li>"
                 depth = fld.tree_depth
     for d in range(depth + 1):
         tree += "</ul>"
@@ -70,6 +71,15 @@ class Folder(TreeNode):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("funicular_up:folder_detail", kwargs={"pk": self.id})
+
+    def get_htmx_url(self):
+        url = f'<a href="#" hx-get="{self.get_absolute_url()}" '
+        url += 'hx-target="#fup-content" hx-push-url="true">'
+        url += f"{self.name}</a> ({self.entry_set.count()})"
+        return url
 
 
 STATUS = [
