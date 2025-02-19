@@ -12,7 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Entry, Folder
+from .models import Entry, Folder, show_folder_tree
 
 
 class FolderCreateForm(ModelForm):
@@ -28,6 +28,7 @@ class FolderListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["object_list"] = context["object_list"].with_tree_fields()
+        context["tree"] = show_folder_tree()
         return context
 
     def get_template_names(self):

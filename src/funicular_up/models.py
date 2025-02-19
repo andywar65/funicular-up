@@ -7,6 +7,33 @@ from PIL import Image
 from tree_queries.models import TreeNode
 
 
+def show_folder_tree():
+    folders = Folder.objects.all().with_tree_fields()
+    if not folders.exists():
+        return _("<p>No folders yet</p>")
+    tree = "<ul>"
+    first = True
+    depth = 0
+    for fld in folders:
+        if first:
+            tree += f"<li>{fld.name}</li>"
+            first = False
+        else:
+            if fld.tree_depth == depth:
+                tree += f"<li>{fld.name}</li>"
+            elif fld.tree_depth > depth:
+                tree += f"<ul><li>{fld.name}</li>"
+                depth = fld.tree_depth
+            else:
+                for d in range(depth - fld.tree_depth):
+                    tree += "</ul>"
+                tree += f"<li>{fld.name}</li>"
+                depth = fld.tree_depth
+    for d in range(depth + 1):
+        tree += "</ul>"
+    return tree
+
+
 class Folder(TreeNode):
     name = models.CharField(
         _("Name"),

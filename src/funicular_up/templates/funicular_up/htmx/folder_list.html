@@ -14,6 +14,7 @@
 {% else %}
   <p>{% trans "No folders yet" %}</p>
 {% endif %}
+{{ tree|safe }}
 {% if perms.funicular_up.add_folder %}
   <hr>
   <a href="#"
