@@ -70,6 +70,11 @@ class FolderDetailView(LoginRequiredMixin, DetailView):
             return ["funicular_up/htmx/folder_detail.html"]
         return super().get_template_names()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["tree"] = show_folder_tree(self.object.descendants().with_tree_fields())
+        return context
+
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
