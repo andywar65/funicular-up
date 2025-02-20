@@ -13,7 +13,8 @@ def show_folder_tree(queryset):
         return _("<p>No folders yet</p>")
     tree = "<ul>"
     first = True
-    depth = 0
+    depth = queryset.first().tree_depth
+    first_depth = depth
     for fld in queryset:
         if first:
             tree += f"<li>{fld.get_htmx_url()} ({fld.entry_set.count()})</li>"
@@ -29,7 +30,7 @@ def show_folder_tree(queryset):
                     tree += "</ul>"
                 tree += f"<li>{fld.get_htmx_url()} ({fld.entry_set.count()})</li>"
                 depth = fld.tree_depth
-    for d in range(depth + 1):
+    for d in range(depth + 1 - first_depth):
         tree += "</ul>"
     return tree
 
