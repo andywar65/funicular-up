@@ -7,14 +7,10 @@
    hx-push-url="true">
   {% trans "All folders" %}
 </a>
-{% if object.parent %} -
-  <a href="#"
-     hx-get="{% url 'funicular_up:folder_detail' pk=object.parent.id %}"
-     hx-target="#fup-content"
-     hx-push-url="true">
-    {% trans "Parent folder" %}
-  </a>
-  : {{ object.parent.name }}
+{% if object.ancestors %}
+  {% for ancestor in object.ancestors %}
+    /{{ ancestor.get_htmx_url|safe }}
+  {% endfor %}
 {% endif %}
 <h2>{% trans "Folder" %}: {{ object.name }}</h2>
 {% if object.children.exists %}
