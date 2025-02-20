@@ -28,7 +28,7 @@ class FolderListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tree"] = show_folder_tree()
+        context["tree"] = show_folder_tree(context["object_list"].with_tree_fields())
         return context
 
     def get_template_names(self):
