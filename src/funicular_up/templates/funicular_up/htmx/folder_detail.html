@@ -66,6 +66,13 @@
     {% trans "Modify folder" %}
   </a>
   <br>
+  <a href="#"
+     hx-get="{% url 'funicular_up:folder_upload' pk=object.id %}"
+     hx-target="#fup-content"
+     hx-push-url="true">
+    {% trans "Upload images to this folder" %}
+  </a>
+  <br>
   <a style="color: red"
      href="#"
      hx-get="{% url 'funicular_up:folder_delete' pk=object.id %}"

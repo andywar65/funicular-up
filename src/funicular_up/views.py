@@ -5,7 +5,7 @@ from django.forms import ModelForm
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
 from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.parsers import MultiPartParser
@@ -60,6 +60,16 @@ class FolderInitialCreateView(FolderCreateView):
         return initial
 
 
+class FolderDetailView(LoginRequiredMixin, DetailView):
+    model = Folder
+    template_name = "funicular_up/folder_detail.html"
+
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["funicular_up/htmx/folder_detail.html"]
+        return super().get_template_names()
+
+
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
@@ -82,14 +92,33 @@ class FileFieldForm(forms.Form):
     file_field = MultipleFileField()
 
 
-class FolderDetailView(LoginRequiredMixin, DetailView):
-    model = Folder
-    template_name = "funicular_up/folder_detail.html"
+class FolderUploadView(PermissionRequiredMixin, FormView):
+    permission_required = "funicular_up.change_folder"
+    template_name = "funicular_up/folder_upload.html"
+    form_class = FileFieldForm
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        self.object = get_object_or_404(Folder, id=kwargs["pk"])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["object"] = self.object
+        return context
 
     def get_template_names(self):
         if "Hx-Request" in self.request.headers:
-            return ["funicular_up/htmx/folder_detail.html"]
+            return ["funicular_up/htmx/folder_upload.html"]
         return super().get_template_names()
+
+    def form_valid(self, form):
+        files = form.cleaned_data["file_field"]
+        for f in files:
+            print("Foo")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("funicular_up:folder_detail", kwargs={"pk": self.object.id})
 
 
 @permission_required("funicular_up.delete_folder")
