@@ -6,6 +6,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
+from filer.models import Image
 from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.parsers import MultiPartParser
@@ -114,7 +115,8 @@ class FolderUploadView(PermissionRequiredMixin, FormView):
     def form_valid(self, form):
         files = form.cleaned_data["file_field"]
         for f in files:
-            print("Foo")
+            image = Image.objects.create(file=f)
+            Entry.objects.create(folder=self.object, image=image)
         return super().form_valid(form)
 
     def get_success_url(self):
