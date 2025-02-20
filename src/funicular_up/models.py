@@ -1,3 +1,4 @@
+import nh3
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
@@ -78,7 +79,7 @@ class Folder(TreeNode):
     def get_htmx_url(self):
         url = f'<a href="#" hx-get="{self.get_absolute_url()}" '
         url += 'hx-target="#fup-content" hx-push-url="true">'
-        url += f"{self.name}</a>"
+        url += f"{nh3.clean(self.name)}</a>"
         return url
 
 
