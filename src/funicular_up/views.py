@@ -20,7 +20,7 @@ from .models import Entry, Folder, show_folder_tree
 class FolderCreateForm(ModelForm):
     class Meta:
         model = Folder
-        fields = ("parent", "name")
+        fields = ("parent", "name", "date")
 
 
 class FolderListView(LoginRequiredMixin, ListView):

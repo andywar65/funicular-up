@@ -42,7 +42,9 @@ class Folder(TreeNode):
         max_length=50,
     )
     description = models.TextField(_("Description"), null=True, blank=True)
-    date = models.DateField(_("Date"), null=True, blank=True)
+    date = models.DateField(
+        _("Date"), null=True, blank=True, help_text=_("YYYY-mm-dd format")
+    )
     geom = PointField(_("Location"), null=True, blank=True)
 
     class Meta:
