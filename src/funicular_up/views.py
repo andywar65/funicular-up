@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
 from filer.models import Image
+from geopy.geocoders import Nominatim
 from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
 from rest_framework.parsers import MultiPartParser
@@ -18,6 +19,10 @@ from .models import Entry, Folder, show_folder_tree
 
 
 class FolderCreateForm(ModelForm):
+    address = forms.CharField(
+        label="Address", required=False, help_text="Enter address to geolocate"
+    )
+
     class Meta:
         model = Folder
         fields = ("parent", "name", "date")
@@ -48,6 +53,17 @@ class FolderCreateView(PermissionRequiredMixin, CreateView):
         if "Hx-Request" in self.request.headers:
             return ["funicular_up/htmx/folder_create.html"]
         return super().get_template_names()
+
+    def form_valid(self, form):
+        if form.cleaned_data["address"]:
+            geolocator = Nominatim(user_agent="andywar65_funicular_up")
+            loc = geolocator.geocode(form.cleaned_data["address"])
+            if loc.longitude and loc.latitude:
+                form.instance.geom = {
+                    "type": "Point",
+                    "coordinates": [loc.longitude, loc.latitude],
+                }
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("funicular_up:folder_detail", kwargs={"pk": self.object.id})
