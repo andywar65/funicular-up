@@ -2,8 +2,15 @@
 
 <h2>{% trans "All folders" %}</h2>
 {{ tree|safe }}
+<hr>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list_date' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All dated folders" %}
+</a>
 {% if perms.funicular_up.add_folder %}
-  <hr>
+  <br>
   <a href="#"
      hx-get="{% url 'funicular_up:folder_create' %}"
      hx-target="#fup-content"
