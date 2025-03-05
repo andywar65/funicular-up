@@ -107,6 +107,7 @@ class Entry(models.Model):
     folder = models.ForeignKey(
         Folder, on_delete=models.CASCADE, verbose_name=_("Folder")
     )
+    position = models.PositiveSmallIntegerField(_("Position"), null=True)
     image = FilerImageField(
         verbose_name=_("Image"),
         related_name="entry_image",
@@ -125,6 +126,7 @@ class Entry(models.Model):
     class Meta:
         verbose_name = _("Entry")
         verbose_name_plural = _("Entries")
+        ordering = ["position", "id"]
 
     def set_as_downloaded(self):
         self.status = "DW"
