@@ -26,7 +26,3 @@ function map_init(map, options) {
     getCollections()
 
 }
-
-function openLocation(path) {
-    htmx.ajax('GET', path, '#fup-content')
-  }
