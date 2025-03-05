@@ -12,6 +12,7 @@ from .views import (
     FolderDetailView,
     FolderInitialCreateView,
     FolderListView,
+    FolderMapListView,
     FolderUploadView,
     SendStatus,
     entry_delete_view,
@@ -23,6 +24,7 @@ urlpatterns = [
     path("", RedirectView.as_view(pattern_name="funicular_up:folder_list")),
     path("folder/", FolderListView.as_view(), name="folder_list"),
     path("folder/date/", FolderDateListView.as_view(), name="folder_list_date"),
+    path("folder/map/", FolderMapListView.as_view(), name="folder_list_map"),
     path("folder/create/", FolderCreateView.as_view(), name="folder_create"),
     path("folder/<pk>/", FolderDetailView.as_view(), name="folder_detail"),
     path(

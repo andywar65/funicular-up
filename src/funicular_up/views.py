@@ -57,6 +57,20 @@ class FolderDateListView(LoginRequiredMixin, ListView):
         return super().get_template_names()
 
 
+class FolderMapListView(LoginRequiredMixin, ListView):
+    model = Folder
+    template_name = "funicular_up/folder_list_map.html"
+
+    def get_queryset(self):
+        qs = Folder.objects.exclude(geom=None)
+        return qs
+
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["funicular_up/htmx/folder_list_map.html"]
+        return super().get_template_names()
+
+
 class FolderCreateView(PermissionRequiredMixin, CreateView):
     permission_required = "funicular_up.add_folder"
     model = Folder
