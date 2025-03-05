@@ -87,8 +87,16 @@ class Folder(TreeNode):
     @property
     def popupContent(self):
         url = self.get_absolute_url()
-        title_str = f'<a href="{url}"><strong>{self.name}</strong></a>'
-        title_str += f"<p>{self.description}</p>"
+        title_str = '<a href="#" '
+        title_str += (
+            "onclick=\"openLocation('%(url)s')\"><strong>%(title)s</strong></a>"
+            % {
+                "title": self.name,
+                "url": url,
+            }
+        )
+        if self.description:
+            title_str += f"<p>{self.description}</p>"
         return {"content": title_str}
 
 
