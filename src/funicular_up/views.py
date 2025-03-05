@@ -206,6 +206,22 @@ class EntryDetailView(LoginRequiredMixin, DetailView):
             obj.save()
         return obj
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            context["previous"] = Entry.objects.get(
+                folder=self.object.folder, position=(self.object.position - 1)
+            )
+        except Entry.DoesNotExist:
+            pass
+        try:
+            context["next"] = Entry.objects.get(
+                folder=self.object.folder, position=(self.object.position + 1)
+            )
+        except Entry.DoesNotExist:
+            pass
+        return context
+
     def get_template_names(self):
         if "Hx-Request" in self.request.headers:
             return ["funicular_up/htmx/entry_detail.html"]
