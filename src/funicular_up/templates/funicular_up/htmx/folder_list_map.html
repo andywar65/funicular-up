@@ -1,3 +1,11 @@
+{% load static %}
 {% load i18n %}
+{% load leaflet_tags %}
+{% load geojson_tags %}
 
 <h2>{% trans "Folders by geolocation" %}</h2>
+<script id="marker_data" type="application/json">{{ object_list|geojsonfeature:"popupContent"|safe }}</script>
+<script src="{% static 'funicular_up/js/map_script.js'%}"></script>
+<div>
+  {% leaflet_map "fupmap" callback="window.map_init" %}
+</div>
