@@ -9,3 +9,26 @@
 <div>
   {% leaflet_map "fupmap" callback="window.map_init" %}
 </div>
+<hr>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All folders" %}
+</a>
+<br>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list_date' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All dated folders" %}
+</a>
+{% if perms.funicular_up.add_folder %}
+  <br>
+  <a href="#"
+     hx-get="{% url 'funicular_up:folder_create' %}"
+     hx-target="#fup-content"
+     hx-push-url="true">
+    {% trans "Add folder" %}
+  </a>
+{% endif %}

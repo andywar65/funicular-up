@@ -16,5 +16,16 @@
    hx-get="{% url 'funicular_up:folder_list' %}"
    hx-target="#fup-content"
    hx-push-url="true">
-  {% trans "Back to list" %}
+  {% trans "All folders" %}
+</a>
+<br>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list_date' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All dated folders" %}
+</a>
+<br>
+<a href="{% url 'funicular_up:folder_list_map' %}">
+  {% trans "All geolocated folders" %}
 </a>

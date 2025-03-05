@@ -24,6 +24,10 @@
    hx-push-url="true">
   {% trans "All folders" %}
 </a>
+<br>
+<a href="{% url 'funicular_up:folder_list_map' %}">
+  {% trans "All geolocated folders" %}
+</a>
 {% if perms.funicular_up.add_folder %}
   <br>
   <a href="#"
