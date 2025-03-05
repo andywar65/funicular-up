@@ -266,6 +266,9 @@ def entry_delete_view(request, pk):
         raise Http404("Request without HTMX headers")
     entry = get_object_or_404(Entry, id=pk)
     folder = entry.folder
+    for follower in folder.entry_set.filter(position__gt=entry.position):
+        follower.position -= 1
+        follower.save()
     entry.delete()
     return HttpResponseRedirect(
         reverse("funicular_up:folder_detail", kwargs={"pk": folder.id})
