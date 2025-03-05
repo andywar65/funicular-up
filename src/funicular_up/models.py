@@ -84,6 +84,13 @@ class Folder(TreeNode):
         url += f"{nh3.clean(self.name)}</a>"
         return url
 
+    @property
+    def popupContent(self):
+        url = self.get_absolute_url()
+        title_str = f'<a href="{url}"><strong>{self.name}</strong></a>'
+        title_str += f"<p>{self.description}</p>"
+        return {"content": title_str}
+
 
 STATUS = [
     ("UP", _("Uploaded to server")),
