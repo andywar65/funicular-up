@@ -162,10 +162,16 @@ class FolderUploadView(PermissionRequiredMixin, FormView):
         return super().get_template_names()
 
     def form_valid(self, form):
+        last = self.object.entry_set.last()
+        if last and last.position:
+            pos = last.position + 1
+        else:
+            pos = 0
         files = form.cleaned_data["file_field"]
         for f in files:
             image = Image.objects.create(file=f)
-            Entry.objects.create(folder=self.object, image=image)
+            Entry.objects.create(folder=self.object, image=image, position=pos)
+            pos += 1
         return super().form_valid(form)
 
     def get_success_url(self):

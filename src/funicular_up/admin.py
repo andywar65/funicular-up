@@ -6,6 +6,7 @@ from .models import Entry, Folder
 
 class EntryAdmin(admin.TabularInline):
     model = Entry
+    # next attribute works only with django-grappelli
     sortable_field_name = "position"
     extra = 0
 
