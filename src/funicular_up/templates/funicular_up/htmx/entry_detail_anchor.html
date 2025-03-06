@@ -1,22 +1,15 @@
 {% load i18n %}
 
-<a href="#"
-   hx-get="{% url 'funicular_up:folder_detail' pk=object.folder.id %}#entry-{{ object.id }}"
-   hx-target="#fup-content"
-   hx-push-url="true">
-  {% trans "Back to folder" %}
-</a>
-: {{ object.folder.name }}
-<br>
 {% if previous %}
   <a href="#"
      hx-get="{% url 'funicular_up:entry_detail' pk=previous.id %}"
      hx-target="#fup-content"
      hx-push-url="true">
     {% trans "Previous image" %}
-  </a>
+  </a> &lt;&lt;
 {% endif %}
 {% if next %}
+  &gt;&gt;
   <a href="#"
      hx-get="{% url 'funicular_up:entry_detail' pk=next.id %}"
      hx-target="#fup-content"
@@ -24,3 +17,11 @@
     {% trans "Next image" %}
   </a>
 {% endif %}
+<br>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_detail' pk=object.folder.id %}#entry-{{ object.id }}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "Back to folder" %}
+</a>
+: {{ object.folder.name }}
