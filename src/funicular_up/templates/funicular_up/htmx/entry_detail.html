@@ -1,6 +1,6 @@
 {% include "funicular_up/htmx/entry_detail_anchor.html" %}
 <figure>
   <img  style="width: 100%" src="{{ object.image.url }}" alt="{{ object.caption }}">
-  <figcaption>{{ object.caption }}</figcaption>
+  <figcaption>{{ object.caption|default_if_none:"" }}</figcaption>
 </figure>
 {% include "funicular_up/htmx/entry_detail_anchor.html" %}

@@ -7,3 +7,20 @@
   {% trans "Back to folder" %}
 </a>
 : {{ object.folder.name }}
+<br>
+{% if previous %}
+  <a href="#"
+     hx-get="{% url 'funicular_up:entry_detail' pk=previous.id %}"
+     hx-target="#fup-content"
+     hx-push-url="true">
+    {% trans "Previous image" %}
+  </a>
+{% endif %}
+{% if next %}
+  <a href="#"
+     hx-get="{% url 'funicular_up:entry_detail' pk=next.id %}"
+     hx-target="#fup-content"
+     hx-push-url="true">
+    {% trans "Next image" %}
+  </a>
+{% endif %}
