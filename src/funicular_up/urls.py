@@ -16,6 +16,7 @@ from .views import (
     FolderUploadView,
     SendStatus,
     entry_delete_view,
+    entry_sort_view,
     folder_delete_view,
 )
 
@@ -38,6 +39,7 @@ urlpatterns = [
         name="folder_upload",
     ),
     path("folder/<pk>/delete/", folder_delete_view, name="folder_delete"),
+    path("folder/<pk>/sort/", entry_sort_view, name="entry_sort"),
     path("entry/<pk>/", EntryDetailView.as_view(), name="entry_detail"),
     path("entry/<pk>/caption/", EntryCaptionUpdateView.as_view(), name="entry_caption"),
     path("entry/<pk>/status/", EntryStatusDetailView.as_view(), name="entry_status"),

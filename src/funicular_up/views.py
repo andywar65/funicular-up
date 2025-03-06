@@ -302,9 +302,9 @@ def entry_sort_view(request, pk):
     elif not request.headers["Hx-Request"] == "true":
         raise Http404("Request without HTMX headers")
     folder = get_object_or_404(Folder, id=pk)
-    if "item" in request.POST:
+    if "entry_list" in request.POST:
         i = 1
-        id_list = request.POST.getlist("item")
+        id_list = request.POST.getlist("entry_list")
         for id in id_list:
             item = get_object_or_404(Entry, id=id)
             if not item.position == i:
