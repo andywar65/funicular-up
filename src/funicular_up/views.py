@@ -166,7 +166,7 @@ class FolderUploadView(PermissionRequiredMixin, FormView):
         if last and last.position:
             pos = last.position + 1
         else:
-            pos = 0
+            pos = 1
         files = form.cleaned_data["file_field"]
         for f in files:
             image = Image.objects.create(file=f)
@@ -288,6 +288,32 @@ def entry_delete_view(request, pk):
     entry.delete()
     return HttpResponseRedirect(
         reverse("funicular_up:folder_detail", kwargs={"pk": folder.id})
+    )
+
+
+@permission_required("funicular_up.change_entry")
+def entry_sort_view(request, pk):
+    """Updates POSTed position of entries,
+    redirects to funicular_up:folder_detail,
+    renders in #fup-content"""
+
+    if "Hx-Request" not in request.headers:
+        raise Http404("Request without HTMX headers")
+    elif not request.headers["Hx-Request"] == "true":
+        raise Http404("Request without HTMX headers")
+    folder = get_object_or_404(Folder, id=pk)
+    if "item" in request.POST:
+        i = 1
+        id_list = request.POST.getlist("item")
+        for id in id_list:
+            item = get_object_or_404(Entry, id=id)
+            if not item.position == i:
+                item.position = i
+                item.save()
+            i += 1
+    return HttpResponseRedirect(
+        reverse("funicular_up:folder_detail", kwargs={"pk": folder.id}),
+        headers={"HX-Request": True},
     )
 
 
