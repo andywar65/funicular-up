@@ -39,17 +39,17 @@
                 {{ entry.caption }}
               {% else %}
                 {% trans "Add caption" %}
-              {% endif %}
-            </a> -
+              {% endif %} -
+            </a>
             <a style="color: red"
                href="#"
                hx-get="{% url 'funicular_up:entry_delete' pk=entry.id %}"
                hx-target="#fup-content"
                hx-confirm="{% trans 'Are you sure you want to delete this entry?' %}">
               {% trans "Delete entry" %}
-            </a> -
+            </a>
           {% elif entry.caption %}
-            {{ entry.caption }} -
+            {{ entry.caption }}
           {% endif %}
           {% include "funicular_up/htmx/entry_status.html" %}
         </figcaption>
