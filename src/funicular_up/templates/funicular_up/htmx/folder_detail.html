@@ -14,6 +14,9 @@
   {% endfor %}
 {% endif %}
 <h2>{% trans "Folder" %}: {{ object.name }}</h2>
+{% if object.description %}
+  <p>{{ object.description }}</p>
+{% endif %}
 {{ tree|safe }}
 {% if object.entry_set.count > 0 %}
   <hr>

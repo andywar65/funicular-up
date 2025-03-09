@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
 from filer.models import Image
+from geopy.exc import GeocoderTimedOut
 from geopy.geocoders import Nominatim
 from rest_framework import serializers
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView
@@ -25,7 +26,7 @@ class FolderCreateForm(ModelForm):
 
     class Meta:
         model = Folder
-        fields = ("parent", "name", "date")
+        fields = ("parent", "name", "description", "date")
 
 
 class FolderListView(LoginRequiredMixin, ListView):
@@ -85,12 +86,15 @@ class FolderCreateView(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         if form.cleaned_data["address"]:
             geolocator = Nominatim(user_agent="andywar65_funicular_up")
-            loc = geolocator.geocode(form.cleaned_data["address"])
-            if loc.longitude and loc.latitude:
-                form.instance.geom = {
-                    "type": "Point",
-                    "coordinates": [loc.longitude, loc.latitude],
-                }
+            try:
+                loc = geolocator.geocode(form.cleaned_data["address"])
+                if loc.longitude and loc.latitude:
+                    form.instance.geom = {
+                        "type": "Point",
+                        "coordinates": [loc.longitude, loc.latitude],
+                    }
+            except GeocoderTimedOut:
+                pass
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -119,12 +123,15 @@ class FolderUpdateView(PermissionRequiredMixin, UpdateView):
     def form_valid(self, form):
         if form.cleaned_data["address"]:
             geolocator = Nominatim(user_agent="andywar65_funicular_up")
-            loc = geolocator.geocode(form.cleaned_data["address"])
-            if loc.longitude and loc.latitude:
-                form.instance.geom = {
-                    "type": "Point",
-                    "coordinates": [loc.longitude, loc.latitude],
-                }
+            try:
+                loc = geolocator.geocode(form.cleaned_data["address"])
+                if loc.longitude and loc.latitude:
+                    form.instance.geom = {
+                        "type": "Point",
+                        "coordinates": [loc.longitude, loc.latitude],
+                    }
+            except GeocoderTimedOut:
+                pass
         return super().form_valid(form)
 
     def get_success_url(self):
