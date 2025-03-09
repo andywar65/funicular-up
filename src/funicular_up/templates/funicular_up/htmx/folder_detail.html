@@ -61,7 +61,10 @@
 {% endif %}
 {% if perms.funicular_up.change_folder %}
   <hr>
-  <a href="/admin/funicular_up/folder/{{ object.id }}/change/">
+  <a href="#"
+     hx-get="{% url 'funicular_up:folder_update' pk=object.id %}"
+     hx-target="#fup-content"
+     hx-push-url="true">
     {% trans "Modify folder" %}
   </a>
   <br>

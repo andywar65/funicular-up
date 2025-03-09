@@ -105,6 +105,32 @@ class FolderInitialCreateView(FolderCreateView):
         return initial
 
 
+class FolderUpdateView(PermissionRequiredMixin, UpdateView):
+    permission_required = "funicular_up.change_folder"
+    model = Folder
+    template_name = "funicular_up/folder_update.html"
+    form_class = FolderCreateForm
+
+    def get_template_names(self):
+        if "Hx-Request" in self.request.headers:
+            return ["funicular_up/htmx/folder_update.html"]
+        return super().get_template_names()
+
+    def form_valid(self, form):
+        if form.cleaned_data["address"]:
+            geolocator = Nominatim(user_agent="andywar65_funicular_up")
+            loc = geolocator.geocode(form.cleaned_data["address"])
+            if loc.longitude and loc.latitude:
+                form.instance.geom = {
+                    "type": "Point",
+                    "coordinates": [loc.longitude, loc.latitude],
+                }
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("funicular_up:folder_detail", kwargs={"pk": self.object.id})
+
+
 class FolderDetailView(LoginRequiredMixin, DetailView):
     model = Folder
     template_name = "funicular_up/folder_detail.html"

@@ -1,0 +1,31 @@
+{% load i18n %}
+
+<h2>{% trans "Change folder" %}: {{ object.title }}</h2>
+<form>
+  {{ form }}
+  <br>
+  <button type="submit"
+          hx-post="{% url 'funicular_up:folder_update' pk=object.id  %}"
+          hx-target="#fup-content"
+          hx-push-url="true">
+    {% trans "Submit" %}
+  </button>
+</form>
+<hr>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All folders" %}
+</a>
+<br>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list_date' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All dated folders" %}
+</a>
+<br>
+<a href="{% url 'funicular_up:folder_list_map' %}">
+  {% trans "All geolocated folders" %}
+</a>
