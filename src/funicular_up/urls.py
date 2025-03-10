@@ -13,6 +13,7 @@ from .views import (
     FolderInitialCreateView,
     FolderListView,
     FolderMapListView,
+    FolderRequestAllDetailView,
     FolderUpdateView,
     FolderUploadView,
     SendStatus,
@@ -35,6 +36,11 @@ urlpatterns = [
         name="folder_create_initial",
     ),
     path("folder/<pk>/update/", FolderUpdateView.as_view(), name="folder_update"),
+    path(
+        "folder/<pk>/request/",
+        FolderRequestAllDetailView.as_view(),
+        name="folder_request",
+    ),
     path(
         "folder/<pk>/upload/",
         FolderUploadView.as_view(),

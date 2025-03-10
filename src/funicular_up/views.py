@@ -153,6 +153,16 @@ class FolderDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
+class FolderRequestAllDetailView(FolderDetailView):
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        for entry in obj.entry_set.filter(status="DW"):
+            entry.status = "RQ"
+            entry.save()
+        return obj
+
+
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 

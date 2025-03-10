@@ -20,13 +20,17 @@
 {{ tree|safe }}
 {% if object.entry_set.count > 0 %}
   <hr>
+  <a href="#"
+     hx-get="{% url 'funicular_up:folder_request' pk=object.id %}"
+     hx-target="#fup-content">
+    {% trans "Request all images" %}
+  </a>
+  <span id="sort-indicator" class="htmx-indicator">{% trans "Updating order..." %}</span>
   <form class="sortable"
         hx-post="{% url 'funicular_up:entry_sort' pk=object.id %}"
         hx-trigger="end"
-        hx-target="#fup-content">
-    <div class="htmx-indicator">
-      <p>{% trans "Updating order..." %}</p>
-    </div>
+        hx-target="#fup-content"
+        hx-indicator="#sort-indicator">
     {% for entry in object.entry_set.all %}
       <figure id="entry-{{entry.id}}">
         <input type='hidden' name='entry_list' value='{{ entry.id }}'/>
@@ -103,12 +107,6 @@
       var sortableInstance = new Sortable(sortable, {
         animation: 150,
         ghostClass: 'blue-background-class',
-
-            // Make the `.htmx-indicator` unsortable
-        filter: ".htmx-indicator",
-        onMove: function (evt) {
-          return evt.related.className.indexOf('htmx-indicator') === -1;
-        },
 
             // Disable sorting on the `end` event
         onEnd: function (evt) {
