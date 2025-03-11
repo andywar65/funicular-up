@@ -1,9 +1,11 @@
 from django import forms
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.forms import ModelForm
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
 from filer.models import Image
@@ -358,6 +360,53 @@ def entry_sort_view(request, pk):
         reverse("funicular_up:folder_detail", kwargs={"pk": folder.id}),
         headers={"HX-Request": True},
     )
+
+
+class ValidateForm(forms.Form):
+    q = forms.CharField(max_length=100)
+
+
+def search_results_view(request):
+    success = False
+    template_name = "funicular_up/search_results.html"
+    if "Hx-Request" in request.headers:
+        template_name = "funicular_up/htmx/search_results.html"
+    form = ValidateForm(request.GET)
+    if form.is_valid():
+        q = SearchQuery(request.GET["q"])
+        v = SearchVector("name", "description")
+        # search in folders
+        folders = Folder.objects.all().annotate(rank=SearchRank(v, q))
+        folders = folders.filter(rank__gt=0.01)
+        if folders:
+            folders = folders.order_by("-rank")
+            success = True
+        v = SearchVector("caption")
+        # search in images
+        images = Entry.objects.all().annotate(rank=SearchRank(v, q))
+        images = images.filter(rank__gt=0.01)
+        if images:
+            images = images.order_by("-rank")
+            success = True
+
+        return TemplateResponse(
+            request,
+            template_name,
+            {
+                "search": request.GET["q"],
+                "folders": folders,
+                "images": images,
+                "success": success,
+            },
+        )
+    else:
+        return TemplateResponse(
+            request,
+            template_name,
+            {
+                "success": success,
+            },
+        )
 
 
 class SendStatus(APIView):
