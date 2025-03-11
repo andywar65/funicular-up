@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<form>
+  <input name="q"
+         type="search"
+         placeholder="{% translate 'Write something to search' %}"
+         hx-get="{% url 'funicular_up:search_results' %}"
+         hx-target="#fup-content"
+         hx-trigger="keyup changed delay:1s, search"
+         hx-push-url="true">
+</form>

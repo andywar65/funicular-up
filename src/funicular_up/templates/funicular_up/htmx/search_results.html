@@ -5,15 +5,7 @@
 {% else %}
   <h3>{% translate 'Search' %}</h3>
 {% endif %}
-<form>
-  <input name="q"
-         type="search"
-         placeholder="{% translate 'Write something to search' %}"
-         hx-get="{% url 'funicular_up:search_results' %}"
-         hx-target="#fup-content"
-         hx-trigger="keyup changed delay:1s, search"
-         hx-push-url="true">
-</form>
+{% include "funicular_up/htmx/search_box.html" %}
 {% if success %}
   {% if folders %}
     <h4>{% translate 'Folders' %}</h4>
@@ -49,4 +41,31 @@
   {% endif %}
 {% else %}
   <p>{% translate "Sorry, no elements that satisfy your search" %}</p>
+{% endif %}
+<hr>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All folders" %}
+</a>
+<br>
+<a href="#"
+   hx-get="{% url 'funicular_up:folder_list_date' %}"
+   hx-target="#fup-content"
+   hx-push-url="true">
+  {% trans "All dated folders" %}
+</a>
+<br>
+<a href="{% url 'funicular_up:folder_list_map' %}">
+  {% trans "All geolocated folders" %}
+</a>
+{% if perms.funicular_up.add_folder %}
+  <br>
+  <a href="#"
+     hx-get="{% url 'funicular_up:folder_create' %}"
+     hx-target="#fup-content"
+     hx-push-url="true">
+    {% trans "Add folder" %}
+  </a>
 {% endif %}
