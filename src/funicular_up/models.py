@@ -11,7 +11,7 @@ from tree_queries.models import TreeNode
 
 def show_folder_tree(queryset):
     if not queryset.exists():
-        return _("<p>No folders yet</p>")
+        return _("<p>No subfolders yet</p>")
     tree = "<ul>"
     first = True
     depth = queryset.first().tree_depth
