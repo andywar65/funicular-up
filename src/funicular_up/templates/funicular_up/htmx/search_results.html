@@ -1,0 +1,52 @@
+{% load i18n %}
+
+{% if search %}
+  <h3>{% translate 'Search' %}: "{{ search }}"</h3>
+{% else %}
+  <h3>{% translate 'Search' %}</h3>
+{% endif %}
+<form>
+  <input name="q"
+         type="search"
+         placeholder="{% translate 'Write something to search' %}"
+         hx-get="{% url 'funicular_up:search_results' %}"
+         hx-target="#fup-content"
+         hx-trigger="keyup changed delay:1s, search"
+         hx-push-url="true">
+</form>
+{% if success %}
+  {% if folders %}
+    <h4>{% translate 'Folders' %}</h4>
+    <ul>
+      {% for folder in folders %}
+        <li>
+          <a href="#"
+             hx-get="{% url 'funicular_up:folder_detail' pk=folder.id %}"
+             hx-target="#fup-content"
+             hx-push-url="true">
+            {{ folder.name }}
+          </a>
+          {{ folder.description|default_if_none:"" }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% if images %}
+    <h4>{% translate 'Images' %}</h4>
+    <ul>
+      {% for image in images %}
+        <li>
+          <a href="#"
+             hx-get="{% url 'funicular_up:entry_detail' pk=image.id %}"
+             hx-target="#fup-content"
+             hx-push-url="true">
+            {{ image.id }}
+          </a>
+          {{ image.caption }} ({% translate 'Folder' %}: {{ image.folder.name }})
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% else %}
+  <p>{% translate "Sorry, no elements that satisfy your search" %}</p>
+{% endif %}
