@@ -20,11 +20,13 @@ from .views import (
     entry_delete_view,
     entry_sort_view,
     folder_delete_view,
+    search_results_view,
 )
 
 app_name = "funicular_up"
 urlpatterns = [
     path("", RedirectView.as_view(pattern_name="funicular_up:folder_list")),
+    path("search/", search_results_view, name="search"),
     path("folder/", FolderListView.as_view(), name="folder_list"),
     path("folder/date/", FolderDateListView.as_view(), name="folder_list_date"),
     path("folder/map/", FolderMapListView.as_view(), name="folder_list_map"),
