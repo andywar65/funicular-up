@@ -7,7 +7,14 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
+from django.views.generic import (
+    CreateView,
+    DetailView,
+    FormView,
+    ListView,
+    RedirectView,
+    UpdateView,
+)
 from filer.models import Image
 from geopy.exc import GeocoderTimedOut
 from geopy.geocoders import Nominatim
@@ -238,6 +245,27 @@ def folder_delete_view(request, pk):
         )
     else:
         return HttpResponseRedirect(reverse("funicular_up:folder_list"))
+
+
+class EntryDetailRedirectView(LoginRequiredMixin, RedirectView):
+
+    def get_redirect_url(self, *args, **kwargs):
+        entry = get_object_or_404(Entry, id=kwargs["pk"])
+        if entry.status == "DW" or entry.status == "RQ":
+            return (
+                reverse("funicular_up:folder_detail", kwargs={"pk": entry.folder.id})
+                + f"#entry-{entry.id}"
+            )
+        return reverse("funicular_up:entry_detail_available", kwargs={"pk": entry.id})
+
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        if (
+            "Hx-Request" in self.request.headers
+            and self.request.headers["Hx-Request"] == "true"
+        ):
+            response["HX-Request"] = True
+        return response
 
 
 class EntryDetailView(LoginRequiredMixin, DetailView):
