@@ -137,3 +137,25 @@ class Entry(models.Model):
                 im.thumbnail((128, int(self.image.height / self.image.width * 128)))
             im.save(self.image.path)
         self.save()
+
+    def get_previous(self):
+        try:
+            prev = Entry.objects.get(
+                folder=self.folder,
+                position=(self.position - 1),
+                status__in=["UP", "ST", "KI"],
+            )
+            return prev
+        except Entry.DoesNotExist:
+            return None
+
+    def get_next(self):
+        try:
+            next = Entry.objects.get(
+                folder=self.folder,
+                position=(self.position + 1),
+                status__in=["UP", "ST", "KI"],
+            )
+            return next
+        except Entry.DoesNotExist:
+            return None

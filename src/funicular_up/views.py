@@ -281,18 +281,8 @@ class EntryDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            context["previous"] = Entry.objects.get(
-                folder=self.object.folder, position=(self.object.position - 1)
-            )
-        except Entry.DoesNotExist:
-            pass
-        try:
-            context["next"] = Entry.objects.get(
-                folder=self.object.folder, position=(self.object.position + 1)
-            )
-        except Entry.DoesNotExist:
-            pass
+        context["previous"] = self.object.get_previous()
+        context["next"] = self.object.get_next()
         return context
 
     def get_template_names(self):
