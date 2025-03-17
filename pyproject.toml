@@ -10,7 +10,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "funicular-up"
-version = "0.1.15"
+version = "0.1.16"
 authors = [
   { name="andywar65", email="andy.war1965@gmail.com" },
 ]
