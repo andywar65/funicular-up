@@ -52,6 +52,7 @@ class Folder(TreeNode):
         verbose_name_plural = _("Folders")
         ordering = (
             "parent_id",
+            "date",
             "name",
         )
         constraints = [
