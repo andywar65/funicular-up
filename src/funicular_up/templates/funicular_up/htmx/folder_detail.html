@@ -1,6 +1,10 @@
 {% load static %}
 {% load i18n %}
 {% load thumbnail %}
+{% if object.geom %}
+  {% load leaflet_tags %}
+  {% load geojson_tags %}
+{% endif %}
 
 <a href="#"
    hx-get="{% url 'funicular_up:folder_list' %}"
@@ -122,4 +126,11 @@
       }
     })
   </script>
+{% endif %}
+{% if object.geom %}
+  <script id="marker_data" type="application/json">{{ object|geojsonfeature:"popupContent"|safe }}</script>
+  <script src="{% static 'funicular_up/js/map_script.js'%}"></script>
+  <div>
+    {% leaflet_map "fupmap" callback="window.map_init" %}
+  </div>
 {% endif %}
