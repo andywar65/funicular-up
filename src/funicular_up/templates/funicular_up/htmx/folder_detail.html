@@ -13,7 +13,7 @@
     /{{ ancestor.get_htmx_url|safe }}
   {% endfor %}
 {% endif %}
-<h2>{% trans "Folder" %}: {{ object.name }}</h2>
+<h2>{% trans "Folder" %}: {{ object.name }}{% if object.date %} - <em>{{ folder.date|date }}{% endif %}</em></h2>
 {% if object.description %}
   <p>{{ object.description }}</p>
 {% endif %}

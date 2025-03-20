@@ -3,7 +3,7 @@
 <form>
   <input name="q"
          type="search"
-         placeholder="{% translate 'Write something to search' %}"
+         placeholder="{% translate 'Start typing to search...' %}"
          hx-get="{% url 'funicular_up:search_results' %}"
          hx-target="#fup-content"
          hx-trigger="keyup changed delay:1s, search"
