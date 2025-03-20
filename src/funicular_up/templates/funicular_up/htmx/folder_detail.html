@@ -18,6 +18,9 @@
   {% endfor %}
 {% endif %}
 <h2>{% trans "Folder" %}: {{ object.name }}{% if object.date %} - <em>{{ folder.date|date }}{% endif %}</em></h2>
+{% if object.geom %}
+  <a href="#fupmap">{% trans "See on map" %}</a>
+{% endif %}
 {% if object.description %}
   <p>{{ object.description }}</p>
 {% endif %}
@@ -128,6 +131,7 @@
   </script>
 {% endif %}
 {% if object.geom %}
+  <hr>
   <script id="marker_data" type="application/json">{{ object|geojsonfeature:"popupContent"|safe }}</script>
   <script src="{% static 'funicular_up/js/map_script.js'%}"></script>
   <div>
