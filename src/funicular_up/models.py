@@ -18,18 +18,20 @@ def show_folder_tree(queryset):
     first_depth = depth
     for fld in queryset:
         if first:
-            tree += f"<li>{fld.get_htmx_url()} ({fld.entry_set.count()})</li>"
+            tree += f"<li>{fld.get_no_htmx_url()} ({fld.entry_set.count()})</li>"
             first = False
         else:
             if fld.tree_depth == depth:
-                tree += f"<li>{fld.get_htmx_url()} ({fld.entry_set.count()})</li>"
+                tree += f"<li>{fld.get_no_htmx_url()} ({fld.entry_set.count()})</li>"
             elif fld.tree_depth > depth:
-                tree += f"<ul><li>{fld.get_htmx_url()} ({fld.entry_set.count()})</li>"
+                tree += (
+                    f"<ul><li>{fld.get_no_htmx_url()} ({fld.entry_set.count()})</li>"
+                )
                 depth = fld.tree_depth
             else:
                 for d in range(depth - fld.tree_depth):
                     tree += "</ul>"
-                tree += f"<li>{fld.get_htmx_url()} ({fld.entry_set.count()})</li>"
+                tree += f"<li>{fld.get_no_htmx_url()} ({fld.entry_set.count()})</li>"
                 depth = fld.tree_depth
     for d in range(depth + 1 - first_depth):
         tree += "</ul>"
@@ -82,6 +84,11 @@ class Folder(TreeNode):
     def get_htmx_url(self):
         url = f'<a href="#" hx-get="{self.get_absolute_url()}" '
         url += 'hx-target="#fup-content" hx-push-url="true">'
+        url += f"{nh3.clean(self.name)}</a>"
+        return url
+
+    def get_no_htmx_url(self):
+        url = f'<a href="{self.get_absolute_url()}">'
         url += f"{nh3.clean(self.name)}</a>"
         return url
 
