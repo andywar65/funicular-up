@@ -2,12 +2,10 @@
 
 <h2>{% trans "Folders by date" %}</h2>
 {% if object_list %}
-  <ul hx-target="#fup-content"
-      hx-push-url="true">
+  <ul>
     {% for folder in object_list %}
       <li>
-        <a href="#"
-           hx-get="{% url 'funicular_up:folder_detail' pk=folder.id %}">
+        <a href="{% url 'funicular_up:folder_detail' pk=folder.id %}">
           {{ folder.name }}
         </a>
         - {{ folder.date|date }}
