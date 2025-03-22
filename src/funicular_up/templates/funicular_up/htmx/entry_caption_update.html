@@ -4,7 +4,7 @@
   <span>{{ form }}
     <button type="submit"
             hx-post="{% url 'funicular_up:entry_caption' pk=entry.id %}"
-            hx-target="#fup-content">
+            hx-target="#sortable-entries">
       {% trans "Submit" %}
     </button></span>
 </form>

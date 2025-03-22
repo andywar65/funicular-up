@@ -332,7 +332,7 @@ class EntryCaptionUpdateView(PermissionRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return (
-            reverse("funicular_up:folder_detail", kwargs={"pk": self.object.folder.id})
+            reverse("funicular_up:entry_sort", kwargs={"pk": self.object.folder.id})
             + f"#entry-{self.object.id}"
         )
 
