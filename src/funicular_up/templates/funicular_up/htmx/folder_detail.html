@@ -30,7 +30,12 @@
     {% trans "Request all images" %}
   </a>
   <span id="sort-indicator" class="htmx-indicator">{% trans "Updating order..." %}</span>
-  {% include "funicular_up/htmx/folder_sortable.html" %}
+  <form class="sortable"
+        hx-post="{% url 'funicular_up:entry_sort' pk=object.id %}"
+        hx-trigger="end"
+        hx-indicator="#sort-indicator">
+    {% include "funicular_up/htmx/folder_sortable.html" %}
+  </form>
 {% else %}
   <p>{% trans "No pictures in this folder" %}</p>
 {% endif %}
