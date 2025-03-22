@@ -1,13 +1,11 @@
 {% load i18n %}
 
 <h2>{% trans "Change folder" %}: {{ object.title }}</h2>
-<form>
+<form action="{% url 'funicular_up:folder_update' pk=object.id %}" method="post">
+  {% csrf_token %}
   {{ form }}
   <br>
-  <button type="submit"
-          hx-post="{% url 'funicular_up:folder_update' pk=object.id  %}"
-          hx-target="#fup-content"
-          hx-push-url="true">
+  <button type="submit">
     {% trans "Submit" %}
   </button>
 </form>
