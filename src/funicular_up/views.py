@@ -350,7 +350,7 @@ def entry_delete_view(request, pk):
         follower.save()
     entry.delete()
     return HttpResponseRedirect(
-        reverse("funicular_up:folder_detail", kwargs={"pk": folder.id})
+        reverse("funicular_up:entry_sort", kwargs={"pk": folder.id})
     )
 
 
