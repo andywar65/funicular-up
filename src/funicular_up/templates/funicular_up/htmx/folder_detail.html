@@ -14,7 +14,7 @@
 </a>
 {% if object.ancestors %}
   {% for ancestor in object.ancestors %}
-    /{{ ancestor.get_htmx_url|safe }}
+    /<a href="{{ ancestor.get_absolute_url }}">{{ ancestor.name }}</a>
   {% endfor %}
 {% endif %}
 <h2>{% trans "Folder" %}: {{ object.name }}{% if object.date %} - <em>{{ folder.date|date }}{% endif %}</em></h2>
