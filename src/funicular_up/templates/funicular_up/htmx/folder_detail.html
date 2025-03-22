@@ -30,7 +30,8 @@
     {% trans "Request all images" %}
   </a>
   <span id="sort-indicator" class="htmx-indicator">{% trans "Updating order..." %}</span>
-  <form class="sortable"
+  <form id="sortable-entries"
+        class="sortable"
         hx-post="{% url 'funicular_up:entry_sort' pk=object.id %}"
         hx-trigger="end"
         hx-indicator="#sort-indicator">
