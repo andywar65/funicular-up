@@ -250,16 +250,22 @@ def folder_delete_view(request, pk):
 class EntryDetailRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
-        entry = get_object_or_404(Entry, id=kwargs["pk"])
-        if entry.status == "DW" or entry.status == "RQ":
+        self.entry = get_object_or_404(Entry, id=kwargs["pk"])
+        if self.entry.status == "DW" or self.entry.status == "RQ":
             return (
-                reverse("funicular_up:folder_detail", kwargs={"pk": entry.folder.id})
-                + f"#entry-{entry.id}"
+                reverse(
+                    "funicular_up:folder_detail", kwargs={"pk": self.entry.folder.id}
+                )
+                + f"#entry-{self.entry.id}"
             )
-        return reverse("funicular_up:entry_detail_available", kwargs={"pk": entry.id})
+        return reverse(
+            "funicular_up:entry_detail_available", kwargs={"pk": self.entry.id}
+        )
 
     def dispatch(self, request, *args, **kwargs):
         response = super().dispatch(request, *args, **kwargs)
+        if self.entry.status == "DW" or self.entry.status == "RQ":
+            return response
         if (
             "Hx-Request" in self.request.headers
             and self.request.headers["Hx-Request"] == "true"
