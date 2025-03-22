@@ -85,6 +85,11 @@ class Folder(TreeNode):
         url += f"{nh3.clean(self.name)}</a>"
         return url
 
+    def get_no_htmx_url(self):
+        url = f'<a href="{self.get_absolute_url()}">'
+        url += f"{nh3.clean(self.name)}</a>"
+        return url
+
     @property
     def popupContent(self):
         title_str = (
