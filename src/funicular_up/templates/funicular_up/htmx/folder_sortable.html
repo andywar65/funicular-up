@@ -1,0 +1,40 @@
+{% load i18n %}
+{% load thumbnail %}
+
+<form class="sortable"
+      hx-post="{% url 'funicular_up:entry_sort' pk=object.id %}"
+      hx-trigger="end"
+      hx-swap="outerHTML"
+      hx-indicator="#sort-indicator">
+  {% for entry in object.entry_set.all %}
+    <figure id="entry-{{entry.id}}">
+      <input type='hidden' name='entry_list' value='{{ entry.id }}'/>
+      <img src="{% thumbnail entry.image 128x128 crop %}" alt="{{ entry.caption }}">
+      <figcaption>
+        {% if perms.funicular_up.change_entry %}
+          <a id="entry-caption-{{entry.id}}"
+             href="#"
+             hx-get="{% url 'funicular_up:entry_caption' pk=entry.id %}"
+             hx-target="#entry-caption-{{entry.id}}"
+             hx-swap="outerHTML">
+            {% if entry.caption %}
+              {{ entry.caption }}
+            {% else %}
+              {% trans "Add caption" %}
+            {% endif %} -
+          </a>
+          <a style="color: red"
+             href="#"
+             hx-get="{% url 'funicular_up:entry_delete' pk=entry.id %}"
+             hx-target="#fup-content"
+             hx-confirm="{% trans 'Are you sure you want to delete this entry?' %}">
+            {% trans "Delete entry" %}
+          </a>
+        {% elif entry.caption %}
+          {{ entry.caption }}
+        {% endif %}
+        {% include "funicular_up/htmx/entry_status.html" %}
+      </figcaption>
+    </figure>
+  {% endfor %}
+</form>

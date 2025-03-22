@@ -374,8 +374,12 @@ def entry_sort_view(request, pk):
                 item.position = i
                 item.save()
             i += 1
-    return HttpResponseRedirect(
-        reverse("funicular_up:folder_detail", kwargs={"pk": folder.id}),
+    template_name = "funicular_up/htmx/folder_sortable.html"
+    context = {"object": folder}
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
         headers={"HX-Request": True},
     )
 
